@@ -1,0 +1,29 @@
+#!/bin/bash
+
+DATA_DIR="data/rootfiles/production"
+ROOT_SCRIPT="scripts/analyze_testbeam.C"
+
+# Check for valid input
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <run_number>"
+    echo "Example: $0 1111"
+    exit 1
+fi
+
+RUN=$1
+
+# Validate input
+if ! [[ $RUN =~ ^[0-9]+$ ]]; then
+    echo "Error: Run number must be an integer."
+    exit 1
+fi
+
+# Find matching file
+MATCHED_FILE=$(ls ${DATA_DIR}/Showermax_${RUN}_*evios.root 2>/dev/null | head -n 1)
+
+if [ -n "$MATCHED_FILE" ]; then
+    echo "Processing run $RUN: $MATCHED_FILE"
+    root --web=chrome -l "${ROOT_SCRIPT}(\"${MATCHED_FILE}\")"
+else
+    echo "Warning: No file found for run $RUN"
+fi

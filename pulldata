@@ -1,0 +1,8 @@
+#!/bin/bash
+
+rsync -avP ifarm:~/moller/testbeam-halld/rootfiles/Showermax_*_*_*_??evios.root data/rootfiles/production/
+rsync -avP ifarm:~/moller/testbeam-halld/rootfiles/Showermax_*_*_*_?evios.root data/rootfiles/testing/
+rsync -avP ifarm:~/moller/testbeam-halld/hd_root_logs/* ./data/hd_root_logs/
+rsync -avP ifarm:~/moller/testbeam-vlad/maindet-ring5/rootfiles/Ring5_*_*_*_??evios.root data/rootfiles/production/
+rsync -avP ifarm:~/moller/testbeam-vlad/maindet-ring5/rootfiles/Ring5_*_*_*_?evios.root data/rootfiles/production/
+rsync -avP ifarm:~/moller/testbeam-vlad/maindet-ring5/hd_root_logs/* ./data/hd_root_logs/

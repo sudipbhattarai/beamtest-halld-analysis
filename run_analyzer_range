@@ -1,0 +1,37 @@
+#!/bin/bash
+
+DATA_DIR="data/rootfiles/production"
+ROOT_SCRIPT="scripts/analyze_testbeam.C"
+
+# Check for valid input
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <start_run_number> <end_run_number>"
+    echo "Example: $0 1110 1120"
+    exit 1
+fi
+
+START_RUN=$1
+END_RUN=$2
+
+# Validate input
+if ! [[ $START_RUN =~ ^[0-9]+$ && $END_RUN =~ ^[0-9]+$ ]]; then
+    echo "Error: Run numbers must be integers."
+    exit 1
+fi
+
+if [ $START_RUN -gt $END_RUN ]; then
+    echo "Error: Start run must be <= end run."
+    exit 1
+fi
+
+for ((RUN = $START_RUN; RUN <= $END_RUN; RUN++)); do
+    # Use globbing to find file with this run number
+    MATCHED_FILE=$(ls ${DATA_DIR}/Showermax_${RUN}_*evios.root 2>/dev/null | head -n 1)
+
+    if [ -n "$MATCHED_FILE" ]; then
+        echo "Processing run $RUN: $MATCHED_FILE"
+        root -b --web=chrome -l -q "${ROOT_SCRIPT}(\"${MATCHED_FILE}\")"
+    else
+        echo "Warning: No file found for run $RUN"
+    fi
+done
