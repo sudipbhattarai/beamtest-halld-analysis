@@ -1,0 +1,13 @@
+.DS_Store
+.cache/
+.git/
+.vscode/
+build/
+archive/
+data/hd_root_logs/
+data/outfiles/
+data/rootfiles/
+data/rpi-pics/
+data/sim/
+data/plots/
+data/logbook_scan_detailed.pdf
