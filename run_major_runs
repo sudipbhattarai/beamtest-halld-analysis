@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Path to your data file
+INPUT_FILE="./data/inputs/major_runs.csv"
+
+# Check if the file exists before starting
+if [[ ! -f "$INPUT_FILE" ]]; then
+    echo "Error: File $INPUT_FILE not found."
+    exit 1
+fi
+
+# Read the CSV file line by line
+# We use tail to skip the header row
+tail -n +2 "$INPUT_FILE" | while IFS=',' read -r runNum energy eNorm; do
+    # Remove any potential carriage returns (common if CSV was saved on Windows)
+    runNum=$(echo "$runNum" | tr -d '\r')
+    energy=$(echo "$energy" | tr -d '\r')
+
+    echo "------------------------------------------------"
+    echo "Processing Run: $runNum with Energy: $energy"
+    echo "------------------------------------------------"
+
+    # Run the analyzer and pipe the energy value into it
+    # This automatically "types" the energy when the script prompts for it
+    echo "$energy" | ./run_analyzer "$runNum"
+
+    echo "Finished processing Run $runNum"
+done
+
+echo "All runs completed successfully."
